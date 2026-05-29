@@ -207,6 +207,9 @@ importers:
 
   .:
     dependencies:
+      hono:
+        specifier: ^4.12.23
+        version: 4.12.23
       ponder:
         specifier: ^0.16.6
         version: 0.16.6(@opentelemetry/api@1.9.1)(@types/node@25.9.1)(hono@4.12.23)(typescript@6.0.3)(viem@2.51.3(typescript@6.0.3))
