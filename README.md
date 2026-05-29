@@ -18,3 +18,4 @@ aeternum-indexer/
 │       └── index.ts           
 └── generated/
 ```
+ponder.config.ts and src/api/index.ts

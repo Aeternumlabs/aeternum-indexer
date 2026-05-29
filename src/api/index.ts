@@ -1,3 +1,11 @@
+/**
+ * src/api/index.ts
+ *
+ * GraphQL API entrypoint for the Aeternum protocol indexer.
+ * Exposes queryable endpoints for indexed vault states, transaction
+ * history, and recovery lifecycle parameters.
+ */
+
 import { db } from "ponder:api";
 import schema from "ponder:schema";
 import { graphql } from "ponder";

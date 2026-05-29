@@ -1,3 +1,11 @@
+/**
+ * ponder.config.ts
+ *
+ * Network and indexing configuration for the Aeternum protocol.
+ * Defines RPC endpoints, sync throttling limits, and contract event 
+ * tracking targets for the Ethereum Sepolia testnet.
+ */
+
 import { createConfig } from "ponder";
 import { AETERNUM_VAULT_ABI } from "./abis/AeternumVault";
 
