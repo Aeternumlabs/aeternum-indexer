@@ -1,1 +1,1 @@
-# aeternum-indexer
+# Aeternum Indexer
