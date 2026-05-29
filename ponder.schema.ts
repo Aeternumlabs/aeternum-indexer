@@ -38,3 +38,14 @@ export const recoveryEvents = onchainTable("recovery_events", (t) => ({
   amount: t.bigint().notNull(),
   timestamp: t.bigint().notNull(),
 }));
+
+// 4. Unified Balance Ledger (For Charting)
+export const balanceEvents = onchainTable("balance_events", (t) => ({
+  id: t.text().primaryKey(), // unique hash + log index
+  vaultId: t.text().notNull(), // The wallet address, named to match GraphQL query
+  eventName: t.text().notNull(), // "Deposited", "Sent", "Withdrawn", "RecoveryExecuted", "RecoveryCancelled"
+  blockNumber: t.bigint().notNull(),
+  logIndex: t.integer().notNull(),
+  blockTimestamp: t.bigint().notNull(),
+  amount: t.bigint(), // Nullable for events that wipe the balance without a specific delta
+}));

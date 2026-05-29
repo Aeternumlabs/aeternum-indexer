@@ -56,6 +56,17 @@ ponder.on("AeternumVault:Deposited", async ({ event, context }) => {
     amount: event.args.amount,
     timestamp: event.block.timestamp,
   });
+
+  // Chart Ledger Update
+  await context.db.insert(schema.balanceEvents).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    vaultId: event.args.wallet.toLowerCase(),
+    eventName: "Deposited",
+    blockNumber: event.block.number,
+    logIndex: event.log.logIndex,
+    blockTimestamp: event.block.timestamp,
+    amount: event.args.amount,
+  });
 });
 
 ponder.on("AeternumVault:Sent", async ({ event, context }) => {
@@ -71,6 +82,17 @@ ponder.on("AeternumVault:Sent", async ({ event, context }) => {
     recipient: event.args.to,
     timestamp: event.block.timestamp,
   });
+
+  // Chart Ledger Update
+  await context.db.insert(schema.balanceEvents).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    vaultId: event.args.wallet.toLowerCase(),
+    eventName: "Sent",
+    blockNumber: event.block.number,
+    logIndex: event.log.logIndex,
+    blockTimestamp: event.block.timestamp,
+    amount: event.args.amount,
+  });
 });
 
 ponder.on("AeternumVault:Withdrawn", async ({ event, context }) => {
@@ -84,6 +106,17 @@ ponder.on("AeternumVault:Withdrawn", async ({ event, context }) => {
     type: "WITHDRAWAL",
     amount: event.args.amount,
     timestamp: event.block.timestamp,
+  });
+
+  // Chart Ledger Update
+  await context.db.insert(schema.balanceEvents).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    vaultId: event.args.wallet.toLowerCase(),
+    eventName: "Withdrawn",
+    blockNumber: event.block.number,
+    logIndex: event.log.logIndex,
+    blockTimestamp: event.block.timestamp,
+    amount: event.args.amount,
   });
 });
 
@@ -100,6 +133,17 @@ ponder.on("AeternumVault:RecoveryExecuted", async ({ event, context }) => {
     backupAddress: event.args.backupAddress,
     amount: event.args.amount,
     timestamp: event.block.timestamp,
+  });
+
+  // Chart Ledger Update
+  await context.db.insert(schema.balanceEvents).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    vaultId: event.args.wallet.toLowerCase(),
+    eventName: "RecoveryExecuted",
+    blockNumber: event.block.number,
+    logIndex: event.log.logIndex,
+    blockTimestamp: event.block.timestamp,
+    amount: event.args.amount,
   });
 });
 
@@ -136,5 +180,16 @@ ponder.on("AeternumVault:RecoveryCancelled", async ({ event, context }) => {
     type: "CANCELLED",
     amount: event.args.refundAmount,
     timestamp: event.block.timestamp,
+  });
+
+  // Chart Ledger Update
+  await context.db.insert(schema.balanceEvents).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    vaultId: event.args.wallet.toLowerCase(),
+    eventName: "RecoveryCancelled",
+    blockNumber: event.block.number,
+    logIndex: event.log.logIndex,
+    blockTimestamp: event.block.timestamp,
+    amount: event.args.refundAmount,
   });
 });
