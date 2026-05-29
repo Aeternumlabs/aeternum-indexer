@@ -14,7 +14,7 @@ export default createConfig({
       chain: "sepolia",
       // Set dynamically via env or fallback to your hardcoded testnet address
       address: (process.env.NEXT_PUBLIC_VAULT_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
-      startBlock: 5000000, // Replace with the precise block number your contract was deployed on
+      startBlock: 10862194,
     },
   },
 });
