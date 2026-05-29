@@ -47,8 +47,9 @@ pnpm install
 2. Create `.env.local` in the repo root with:
 
 ```bash
-DRPC_URL=<your_sepolia_rpc_url>
-NEXT_PUBLIC_VAULT_ADDRESS=<AeternumVault_contract_address>
+DRPC_URL=<your_sepolia_drpc_url>
+DATABASE_URL=postgresql://username:password@localhost/database_name
+NEXT_PUBLIC_VAULT_ADDRESS=<0xYourContractAddressHere>
 ```
 
 3. Start the indexer:
