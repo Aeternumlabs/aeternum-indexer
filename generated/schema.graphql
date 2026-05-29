@@ -28,6 +28,8 @@ type Query {
   vaultTransactionss(where: vaultTransactionsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): vaultTransactionsPage!
   recoveryEvents(id: String!): recoveryEvents
   recoveryEventss(where: recoveryEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): recoveryEventsPage!
+  balanceEvents(id: String!): balanceEvents
+  balanceEventss(where: balanceEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int, offset: Int): balanceEventsPage!
   _meta: Meta
 }
 
@@ -314,4 +316,105 @@ input recoveryEventsFilter {
   timestamp_lt: BigInt
   timestamp_gte: BigInt
   timestamp_lte: BigInt
+}
+
+type balanceEvents {
+  id: String!
+  vaultId: String!
+  eventName: String!
+  blockNumber: BigInt!
+  logIndex: Int!
+  blockTimestamp: BigInt!
+  amount: BigInt
+}
+
+type balanceEventsPage {
+  items: [balanceEvents!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input balanceEventsFilter {
+  AND: [balanceEventsFilter]
+  OR: [balanceEventsFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  id_contains_nocase: String
+  id_not_contains_nocase: String
+  id_starts_with_nocase: String
+  id_ends_with_nocase: String
+  id_not_starts_with_nocase: String
+  id_not_ends_with_nocase: String
+  vaultId: String
+  vaultId_not: String
+  vaultId_in: [String]
+  vaultId_not_in: [String]
+  vaultId_contains: String
+  vaultId_not_contains: String
+  vaultId_starts_with: String
+  vaultId_ends_with: String
+  vaultId_not_starts_with: String
+  vaultId_not_ends_with: String
+  vaultId_contains_nocase: String
+  vaultId_not_contains_nocase: String
+  vaultId_starts_with_nocase: String
+  vaultId_ends_with_nocase: String
+  vaultId_not_starts_with_nocase: String
+  vaultId_not_ends_with_nocase: String
+  eventName: String
+  eventName_not: String
+  eventName_in: [String]
+  eventName_not_in: [String]
+  eventName_contains: String
+  eventName_not_contains: String
+  eventName_starts_with: String
+  eventName_ends_with: String
+  eventName_not_starts_with: String
+  eventName_not_ends_with: String
+  eventName_contains_nocase: String
+  eventName_not_contains_nocase: String
+  eventName_starts_with_nocase: String
+  eventName_ends_with_nocase: String
+  eventName_not_starts_with_nocase: String
+  eventName_not_ends_with_nocase: String
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  logIndex: Int
+  logIndex_not: Int
+  logIndex_in: [Int]
+  logIndex_not_in: [Int]
+  logIndex_gt: Int
+  logIndex_lt: Int
+  logIndex_gte: Int
+  logIndex_lte: Int
+  blockTimestamp: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_in: [BigInt]
+  blockTimestamp_not_in: [BigInt]
+  blockTimestamp_gt: BigInt
+  blockTimestamp_lt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_lte: BigInt
+  amount: BigInt
+  amount_not: BigInt
+  amount_in: [BigInt]
+  amount_not_in: [BigInt]
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
 }
