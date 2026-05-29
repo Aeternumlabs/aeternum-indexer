@@ -14,7 +14,6 @@ export default createConfig({
     sepolia: {
       id: 11155111,
       rpc: process.env.DRPC_URL,
-      // Throttle RPC calls to stay safely under Alchemy's free tier limits
       maxRequestsPerSecond: 10,
       // Force Ponder to fetch logs in smaller chunks to avoid payload timeouts
       ethGetLogsBlockRange: 1000, 
