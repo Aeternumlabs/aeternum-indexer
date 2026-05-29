@@ -12,7 +12,7 @@ This is an on-chain indexer for the `AeternumVault` smart contract. It listens f
 
 ## Repository structure
 
-```
+```bash
 aeternum-indexer/
 ├── .env.local                 # local environment variables
 ├── .gitignore                 # ignored files
@@ -44,7 +44,7 @@ aeternum-indexer/
 pnpm install
 ```
 
-2. Create `.env.local` in the repo root with:
+1. Create `.env.local` in the repo root with:
 
 ```bash
 DRPC_URL=<your_sepolia_drpc_url>
@@ -52,7 +52,7 @@ DATABASE_URL=postgresql://username:password@localhost/database_name
 NEXT_PUBLIC_VAULT_ADDRESS=<0xYourContractAddressHere>
 ```
 
-3. Start the indexer:
+1. Start the indexer:
 
 ```bash
 pnpm dev
