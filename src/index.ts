@@ -11,8 +11,16 @@ import schema from "ponder:schema";
 
 // --- 1. REGISTRATION ---
 ponder.on("AeternumVault:RecoveryRegistered", async ({ event, context }) => {
+  // Use onConflictDoUpdate to handle re-registrations (Upsert)
   await context.db.insert(schema.vaults).values({
     id: event.args.wallet,
+    backupAddress: event.args.backupAddress,
+    inactivityPeriod: event.args.inactivityPeriod,
+    lastActivityTimestamp: event.block.timestamp,
+    isRecovered: false,
+    isAbandoned: false,
+    createdAtBlock: event.block.number,
+  }).onConflictDoUpdate({
     backupAddress: event.args.backupAddress,
     inactivityPeriod: event.args.inactivityPeriod,
     lastActivityTimestamp: event.block.timestamp,
