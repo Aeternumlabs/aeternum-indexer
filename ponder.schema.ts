@@ -19,27 +19,24 @@ export const vaults = onchainTable("vaults", (t) => ({
   createdAtBlock: t.bigint().notNull(),
 }));
 
-// 2. Financial Transactions Log
+// 2. Unified Vault Transactions Log
+// Handles BOTH financial events (Deposits/Sends) AND lifecycle events (Pings/Recovery)
 export const vaultTransactions = onchainTable("vault_transactions", (t) => ({
   id: t.text().primaryKey(), // unique hash + log index
   wallet: t.text().notNull(),
-  type: t.text().notNull(), // "DEPOSIT", "WITHDRAWAL", "SENT"
-  amount: t.bigint().notNull(),
-  recipient: t.text(), // Populated during "SENT" events
+  type: t.text().notNull(), // "DEPOSIT", "WITHDRAWAL", "SENT", "PING", "REGISTERED", "RECOVERY_EXECUTED", etc.
+  
+  // These fields are nullable because a "PING" has no amount or toAddress
+  amount: t.bigint(), 
+  toAddress: t.text(), // Renamed from 'recipient' to match frontend GraphQL
+
+  // New fields required by the frontend UI
+  transactionHash: t.text().notNull(), 
+  blockNumber: t.bigint().notNull(),
   timestamp: t.bigint().notNull(),
 }));
 
-// 3. Recovery Lifecycle Log
-export const recoveryEvents = onchainTable("recovery_events", (t) => ({
-  id: t.text().primaryKey(), // unique hash + log index
-  wallet: t.text().notNull(),
-  type: t.text().notNull(), // "EXECUTED", "FAILED", "ABANDONED", "CANCELLED"
-  backupAddress: t.text(),
-  amount: t.bigint().notNull(),
-  timestamp: t.bigint().notNull(),
-}));
-
-// 4. Unified Balance Ledger (For Charting)
+// 3. Unified Balance Ledger (For Charting)
 export const balanceEvents = onchainTable("balance_events", (t) => ({
   id: t.text().primaryKey(), // unique hash + log index
   vaultId: t.text().notNull(), // The wallet address, named to match GraphQL query

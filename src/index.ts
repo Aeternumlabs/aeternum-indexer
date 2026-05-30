@@ -20,12 +20,32 @@ ponder.on("AeternumVault:RecoveryRegistered", async ({ event, context }) => {
     isAbandoned: false,
     createdAtBlock: event.block.number,
   });
+
+  // Added to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    wallet: event.args.wallet,
+    type: "REGISTERED",
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
+    timestamp: event.block.timestamp,
+  });
 });
 
 // --- 2. ACTIVITY & CONFIG UPDATES ---
 ponder.on("AeternumVault:ActivityPinged", async ({ event, context }) => {
   await context.db.update(schema.vaults, { id: event.args.wallet }).set({
     lastActivityTimestamp: event.args.timestamp,
+  });
+
+  // Added to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    wallet: event.args.wallet,
+    type: "PING",
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
+    timestamp: event.block.timestamp,
   });
 });
 
@@ -34,12 +54,32 @@ ponder.on("AeternumVault:BackupAddressUpdated", async ({ event, context }) => {
     backupAddress: event.args.newBackupAddress,
     lastActivityTimestamp: event.block.timestamp,
   });
+
+  // Added to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    wallet: event.args.wallet,
+    type: "BACKUP_UPDATED",
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
+    timestamp: event.block.timestamp,
+  });
 });
 
 ponder.on("AeternumVault:InactivityPeriodUpdated", async ({ event, context }) => {
   await context.db.update(schema.vaults, { id: event.args.wallet }).set({
     inactivityPeriod: event.args.newPeriod,
     lastActivityTimestamp: event.block.timestamp,
+  });
+
+  // Added to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
+    id: `${event.transaction.hash}-${event.log.logIndex}`,
+    wallet: event.args.wallet,
+    type: "PERIOD_UPDATED",
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
+    timestamp: event.block.timestamp,
   });
 });
 
@@ -54,6 +94,8 @@ ponder.on("AeternumVault:Deposited", async ({ event, context }) => {
     wallet: event.args.wallet,
     type: "DEPOSIT",
     amount: event.args.amount,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 
@@ -79,7 +121,9 @@ ponder.on("AeternumVault:Sent", async ({ event, context }) => {
     wallet: event.args.wallet,
     type: "SENT",
     amount: event.args.amount,
-    recipient: event.args.to,
+    toAddress: event.args.to, // Renamed from recipient
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 
@@ -105,6 +149,8 @@ ponder.on("AeternumVault:Withdrawn", async ({ event, context }) => {
     wallet: event.args.wallet,
     type: "WITHDRAWAL",
     amount: event.args.amount,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 
@@ -126,12 +172,15 @@ ponder.on("AeternumVault:RecoveryExecuted", async ({ event, context }) => {
     isRecovered: true,
   });
 
-  await context.db.insert(schema.recoveryEvents).values({
+  // Moved from recoveryEvents to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
     id: `${event.transaction.hash}-${event.log.logIndex}`,
     wallet: event.args.wallet,
-    type: "EXECUTED",
-    backupAddress: event.args.backupAddress,
+    type: "RECOVERY_EXECUTED",
+    toAddress: event.args.backupAddress, // Maps backup address to recipient field
     amount: event.args.amount,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 
@@ -148,12 +197,14 @@ ponder.on("AeternumVault:RecoveryExecuted", async ({ event, context }) => {
 });
 
 ponder.on("AeternumVault:RecoveryFailed", async ({ event, context }) => {
-  await context.db.insert(schema.recoveryEvents).values({
+  // Moved from recoveryEvents to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
     id: `${event.transaction.hash}-${event.log.logIndex}`,
     wallet: event.args.wallet,
-    type: "FAILED",
-    backupAddress: event.args.backupAddress,
+    type: "RECOVERY_FAILED",
     amount: event.args.amount,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 });
@@ -163,22 +214,27 @@ ponder.on("AeternumVault:RecoveryAbandoned", async ({ event, context }) => {
     isAbandoned: true,
   });
 
-  await context.db.insert(schema.recoveryEvents).values({
+  // Moved from recoveryEvents to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
     id: `${event.transaction.hash}-${event.log.logIndex}`,
     wallet: event.args.wallet,
-    type: "ABANDONED",
-    backupAddress: event.args.backupAddress,
+    type: "RECOVERY_ABANDONED",
     amount: event.args.balance,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 });
 
 ponder.on("AeternumVault:RecoveryCancelled", async ({ event, context }) => {
-  await context.db.insert(schema.recoveryEvents).values({
+  // Moved from recoveryEvents to unified ledger
+  await context.db.insert(schema.vaultTransactions).values({
     id: `${event.transaction.hash}-${event.log.logIndex}`,
     wallet: event.args.wallet,
-    type: "CANCELLED",
+    type: "RECOVERY_CANCELLED",
     amount: event.args.refundAmount,
+    transactionHash: event.transaction.hash,
+    blockNumber: event.block.number,
     timestamp: event.block.timestamp,
   });
 
