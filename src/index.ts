@@ -7,7 +7,7 @@
  */
 
 import { ponder } from "ponder:registry";
-import schema from "ponder:schema";
+import * as schema from "ponder:schema";
 
 // --- 1. REGISTRATION ---
 ponder.on("AeternumVault:RecoveryRegistered", async ({ event, context }) => {
