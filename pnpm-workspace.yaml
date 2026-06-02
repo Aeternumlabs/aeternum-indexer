@@ -1,5 +1,2 @@
 allowBuilds:
   esbuild: false
-
-overrides:
-  drizzle-orm: "0.38.4"
